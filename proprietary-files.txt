@@ -565,9 +565,6 @@ system/lib64/libsxqk_skia.so
 # Qualcomm MSM Interface
 vendor/bin/irsc_util
 vendor/bin/pd-mapper
-vendor/etc/hyper/config_chipset.json
-vendor/etc/hyper/config_hyper_permission.json
-vendor/etc/hyper/config_vendor.json
 vendor/etc/init/init.qti.qcv.rc
 vendor/etc/init/vendor.qti.rmt_storage.rc
 vendor/etc/init/vendor.qti.tftp.rc
@@ -743,9 +740,7 @@ vendor/etc/init/init_thermal-engine.rc
 vendor/etc/init/vendor.samsung.hardware.thermal@1.0-service.rc
 vendor/etc/thermal-engine.conf
 vendor/lib/libthermalclient.so
-vendor/lib64/libhypervintf.so
 vendor/lib64/libthermalclient.so
-vendor/lib64/vendor.samsung.hardware.hyper-V2-ndk_platform.so
 vendor/lib64/vendor.samsung.hardware.thermal@1.0.so
 
 # Time
