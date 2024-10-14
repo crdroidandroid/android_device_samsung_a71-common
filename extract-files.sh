@@ -13,6 +13,8 @@ if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
 
 ANDROID_ROOT="${MY_DIR}/../../.."
 
+export TARGET_ENABLE_CHECKELF=true
+
 HELPER="${ANDROID_ROOT}/tools/extract-utils/extract_utils.sh"
 if [ ! -f "${HELPER}" ]; then
     echo "Unable to find helper script at ${HELPER}"
@@ -22,9 +24,6 @@ source "${HELPER}"
 
 function blob_fixup() {
     case "${1}" in
-        vendor/lib64/hw/android.hardware.health@2.0-impl-2.1-samsung.so)
-            "${PATCHELF}" --replace-needed "libutils.so" "libutils-v30.so" "${2}"
-            ;;
         vendor/lib64/libsec-ril.so)
             # Replace SlotID prop
             sed -i 's/ril.dds.call.ongoing/vendor.calls.slot_id/g' "${2}"
@@ -32,7 +31,11 @@ function blob_fixup() {
             xxd -p -c0 "${2}" | sed "s/600e40f9820c805224008052e10315aa080040f9e30314aa/600e40f9820c805224008052e10315aa080040f9030080d2/g" | xxd -r -p > "${2}".patched
             mv "${2}".patched "${2}"
             ;;
-        vendor/lib64/hw/gatekeeper.mdfpp.so|vendor/lib64/libskeymaster4device.so)
+        vendor/lib*/libsensorlistener.so)
+            [ "$2" = "" ] && return 0
+            "${PATCHELF}" --add-needed "libshim_sensorndkbridge.so" "${2}"
+            ;;
+        vendor/lib64/hw/gatekeeper.mdfpp.so|vendor/lib64/libkeymaster_helper.so|vendor/lib64/libskeymaster4device.so)
             "${PATCHELF}" --replace-needed "libcrypto.so" "libcrypto-v33.so" "${2}"
             ;;
     esac

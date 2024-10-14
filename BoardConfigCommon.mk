@@ -7,7 +7,6 @@
 BOARD_VENDOR := samsung
 
 BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
 COMMON_PATH := device/samsung/a71-common
 
@@ -67,8 +66,7 @@ $(call soong_config_set,samsungCameraVars,needs_sec_reserved_field,true)
 
 SOONG_CONFIG_NAMESPACES += samsungCameraVars
 SOONG_CONFIG_samsungCameraVars += extra_ids
-SOONG_CONFIG_samsungCameraVars += camera_32bit
-SOONG_CONFIG_samsungCameraVars_camera_32bit := true
+
 # ID=52 is depth
 # ID=54 is macro
 SOONG_CONFIG_samsungCameraVars_extra_ids := 54,52
