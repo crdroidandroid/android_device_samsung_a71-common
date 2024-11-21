@@ -10,11 +10,8 @@ from extract_utils.fixups_blob import (
 )
 from extract_utils.fixups_lib import (
     lib_fixup_remove,
-    lib_fixup_remove_arch_suffix,
-    lib_fixup_vendorcompat,
+    lib_fixups,
     lib_fixups_user_type,
-    libs_clang_rt_ubsan,
-    libs_proto_3_9_1,
 )
 from extract_utils.main import (
     ExtractUtils,
@@ -38,8 +35,7 @@ def lib_fixup_vendor_suffix(lib: str, partition: str, *args, **kwargs):
 
 
 lib_fixups: lib_fixups_user_type = {
-    libs_clang_rt_ubsan: lib_fixup_remove_arch_suffix,
-    libs_proto_3_9_1: lib_fixup_vendorcompat,
+    **lib_fixups,
     (
         'com.qualcomm.qti.ant@1.0_vendor',
         'libmmosal',
@@ -60,7 +56,7 @@ blob_fixups: blob_fixups_user_type = {
      'vendor/lib64/libsec-ril.so': blob_fixup()
         .binary_regex_replace(b'ril.dds.call.ongoing', b'vendor.calls.slot_id')
         .sig_replace('E1 03 15 AA 08 00 40 F9 E3 03 14 AA 08 09 40 F9', 'E1 03 15 AA 08 00 40 F9 03 00 80 D2 08 09 40 F9'),
-     'vendor/lib/libsensorlistener.so': blob_fixup()
+    ('vendor/lib/libsensorlistener.so', 'vendor/lib64/libsensorlistener.so'): blob_fixup()
         .add_needed('libshim_sensorndkbridge.so'),
 }  # fmt: skip
 
@@ -70,7 +66,6 @@ module = ExtractUtilsModule(
     blob_fixups=blob_fixups,
     lib_fixups=lib_fixups,
     namespace_imports=namespace_imports,
-    check_elf=True,
 )
 
 if __name__ == '__main__':
