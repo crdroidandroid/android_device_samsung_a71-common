@@ -13,9 +13,6 @@ COMMON_PATH := device/samsung/a71-common
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "qualcomm-hidl"
 
-# APEX
-DEXPREOPT_GENERATE_APEX_IMAGE := true
-
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-2a-dotprod
@@ -52,6 +49,9 @@ TARGET_EXCLUDES_AUDIOFX := true
 BOARD_HAVE_BLUETOOTH_QCOM := true
 BOARD_USES_COMMON_BLUETOOTH_HAL := true
 
+# Board
+TARGET_BOARD_INFO_FILE := $(COMMON_PATH)/‎board-info.txt
+
 # Bootanimation
 TARGET_BOOTANIMATION_HALF_RES := true
 
@@ -77,14 +77,8 @@ USE_DEVICE_SPECIFIC_CAMERA := true
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
-# CnE
-BOARD_USES_QCNE := true
-
 # Dexpreopt
 BOARD_USES_SYSTEM_OTHER_ODEX := true
-
-# DPM
-BOARD_USES_DPM := true
 
 # FM
 BOARD_HAVE_QCOM_FM := true
@@ -107,14 +101,6 @@ TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 TARGET_HARDWARE_3D := true
 TARGET_HAS_HDR_DISPLAY := true
 TARGET_HAS_WIDE_COLOR_DISPLAY := true
-TARGET_USES_C2D_COMPOSITION := true
-TARGET_USES_COLOR_METADATA := true
-TARGET_USES_DISPLAY_RENDER_INTENTS := true
-TARGET_USES_DRM_PP := true
-TARGET_USES_GRALLOC1 := true
-TARGET_USES_GRALLOC4 := true
-TARGET_USES_HWC2 := true
-TARGET_USES_ION := true
 USE_OPENGL_RENDERER := true
 VSYNC_EVENT_PHASE_OFFSET_NS := 2000000
 
@@ -140,22 +126,27 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_sm7150
 
 # Kernel
 BOARD_BOOT_HEADER_VERSION := 2
-BOARD_DTB_OFFSET := 0x01F00000
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/1d84000.ufshc androidboot.fstab_suffix=qcom
-BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=1 androidboot.usbcontroller=a600000.dwc3 firmware_class.path=/vendor/firmware_mnt/image nokaslr printk.devkmsg=on
+BOARD_KERNEL_CMDLINE := \
+    androidboot.hardware=qcom \
+    androidboot.memcg=1 \
+    androidboot.usbcontroller=a600000.dwc3 \
+    console=null \
+    firmware_class.path=/vendor/firmware_mnt/image \
+    lpm_levels.sleep_disabled=1 \
+    msm_rtb.filter=0x237 \
+    nokaslr \
+    printk.devkmsg=on \
+    service_locator.enable=1 \
+    swiotlb=1
+
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
-BOARD_KERNEL_OFFSET := 0x00008000
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_SEPARATED_DTBO := true
-BOARD_KERNEL_TAGS_OFFSET := 0x01e00000
-BOARD_RAMDISK_OFFSET := 0x02000000
-BOARD_MKBOOTIMG_ARGS := --dtb_offset $(BOARD_DTB_OFFSET) --header_version $(BOARD_BOOT_HEADER_VERSION) --kernel_offset $(BOARD_KERNEL_OFFSET) --ramdisk_offset $(BOARD_RAMDISK_OFFSET) --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
-TARGET_KERNEL_ARCH := arm64
-TARGET_KERNEL_CLANG_COMPILE := true
+BOARD_MKBOOTIMG_ARGS :=  --header_version $(BOARD_BOOT_HEADER_VERSION)
 TARGET_KERNEL_SOURCE := kernel/samsung/a71
-TARGET_KERNEL_VERSION := 4.14
 
 # Keymaster
 TARGET_KEYMASTER_VARIANT := samsung
@@ -168,6 +159,9 @@ TARGET_HEALTH_CHARGING_CONTROL_CHARGING_PATH := /sys/class/power_supply/battery/
 TARGET_HEALTH_CHARGING_CONTROL_CHARGING_ENABLED := 0
 TARGET_HEALTH_CHARGING_CONTROL_CHARGING_DISABLED := 1
 TARGET_HEALTH_CHARGING_CONTROL_SUPPORTS_BYPASS := false
+
+# Media
+TARGET_USES_ION := true
 
 # Partitions
 include vendor/lineage/config/BoardConfigReservedSize.mk

@@ -1,3 +1,8 @@
+# AAudio - MMAP
+aaudio.hw_burst_min_usec=2000
+aaudio.mmap_policy=2
+aaudio.mmap_exclusive_policy=2
+
 # Audio
 audio.offload.min.duration.secs=30
 persist.vendor.audio.avs.afe_api_version=2
@@ -12,12 +17,12 @@ persist.vendor.audio.speaker.prot.enable=true
 persist.vendor.audio.spv3.enable=true
 ro.vendor.audio.sdk.fluencetype=none
 ro.vendor.audio.sdk.ssr=false
+use.voice.path.for.pcm.voip=true
 vendor.audio.adm.buffering.ms=2
 vendor.audio.dolby.ds2.enabled=false
 vendor.audio.dolby.ds2.hardbypass=false
 vendor.audio.feature.a2dp_offload.enable=false
 vendor.audio.feature.audiozoom.enable=false
-vendor.audio.feature.compr_voip.enable=true
 vendor.audio.feature.compress_meta_data.enable=true
 vendor.audio.feature.concurrent_capture.enable=false
 vendor.audio.feature.deepbuffer_as_primary.enable=true
@@ -33,7 +38,6 @@ vendor.audio.feature.multi_voice_session.enable=false
 vendor.audio.feature.snd_mon.enable=true
 vendor.audio.feature.spkr_prot.enable=true
 vendor.audio.feature.usb_offload.enable=true
-vendor.audio.flac.sw.decoder.24bit=true
 vendor.audio.hal.boot.timeout.ms=20000
 vendor.audio_hal.in_period_size=144
 vendor.audio_hal.period_multiplier=3
@@ -52,7 +56,6 @@ vendor.audio.tunnel.encode=false
 vendor.audio.use.sw.alac.decoder=true
 vendor.audio.use.sw.ape.decoder=true
 vendor.audio.volume.headset.gain.depcal=true
-vendor.voice.path.for.pcm.voip=true
 
 # Bluetooth
 bluetooth.device.class_of_device=90,2,12
@@ -79,6 +82,7 @@ bluetooth.profile.pbap.server.enabled?=true
 bluetooth.profile.sap.server.enabled?=true
 bluetooth.profile.vcp.controller.enabled?=false
 persist.bluetooth.a2dp_offload.disabled=false
+persist.bluetooth.bqr.event_mask=0
 persist.vendor.bt.aac_frm_ctl.enabled=true
 persist.vendor.qcom.bluetooth.a2dp_offload_cap=sbc-aptx-aptxtws-aptxhd-aac-ldac
 persist.vendor.qcom.bluetooth.aac_frm_ctl.enabled=true
@@ -93,9 +97,6 @@ ro.vendor.bt.bdaddr_path=/mnt/vendor/efs/bluetooth/bt_addr
 # Bluetooth SoC
 persist.vendor.qcom.bluetooth.soc=cherokee
 vendor.qcom.bluetooth.soc=cherokee
-
-# CNE
-persist.vendor.cne.feature=0
 
 # Camera
 camera.disable_zsl_mode=1
@@ -121,9 +122,11 @@ dalvik.vm.heapstartsize=8m
 dalvik.vm.heaptargetutilization=0.75
 
 # Display
+debug.sf.auto_latch_unsignaled=true
 debug.sf.disable_backpressure=1
 debug.sf.disable_client_composition_cache=1
 debug.sf.enable_advanced_sf_phase_offset=1
+debug.sf.enable_gl_backpressure=1
 debug.sf.early_app_phase_offset_ns=100000
 debug.sf.early_phase_offset_ns=100000
 debug.sf.early_gl_app_phase_offset_ns=100000
@@ -142,7 +145,6 @@ ro.surface_flinger.has_wide_color_display=true
 ro.surface_flinger.max_frame_buffer_acquired_buffers=3
 ro.surface_flinger.max_virtual_display_dimension=4096
 ro.surface_flinger.protected_contents=true
-ro.surface_flinger.set_touch_timer_ms=200
 ro.surface_flinger.use_color_management=true
 ro.surface_flinger.use_content_detection_for_refresh_rate=true
 ro.surface_flinger.wcg_composition_dataspace=143261696
@@ -154,11 +156,13 @@ vendor.display.disable_excl_rect=0
 vendor.display.disable_ext_anim=1
 vendor.display.disable_hw_recovery_dump=1
 vendor.display.disable_inline_rotator=1
+vendor.display.disable_rotator_downscale=1
 vendor.display.disable_scaler=0
 vendor.display.disable_ui_3d_tonemap=1
 vendor.display.enable_default_color_mode=1
 vendor.display.enable_null_display=0
 vendor.display.enable_optimize_refresh=1
+vendor.display.enable_perf_hint_large_comp_cycle=1
 vendor.display.idle_time=0
 vendor.display.idle_time_inactive=0
 vendor.gralloc.disable_ubwc=0
@@ -168,6 +172,9 @@ drm.service.enabled=true
 
 # Fastbootd
 ro.fastbootd.available=true
+
+# Filesystem
+fs_mgr.overlayfs.prefer_cache_backing_storage=true
 
 # Fingerprint
 ro.vendor.fingerprint.force_calibrate=true
@@ -183,6 +190,9 @@ ro.frp.pst=/dev/block/persistent
 # Fs-verity
 ro.apk_verity.mode=2
 
+# FUSE passthrough
+persist.sys.fuse.passthrough.enable=true
+
 # Gatekeeper
 ro.hardware.gatekeeper=mdfpp
 
@@ -190,7 +200,6 @@ ro.hardware.gatekeeper=mdfpp
 sys.qca1530=detect
 
 # Graphics
-ro.gfx.driver.1=com.qualcomm.qti.gpudrivers.sm6150.api30
 ro.hardware.egl=adreno
 ro.hardware.vulkan=adreno
 ro.opengles.version=196610
@@ -209,15 +218,20 @@ ro.hardware.lights=qcom
 # Media
 debug.media.codec2=2
 audio.offload.video=true
-debug.stagefright.omx_default_rank=0
 media.settings.xml=/vendor/etc/media_profiles_vendor.xml
 ro.config.vc_call_vol_steps=8
 
 # NFC
 ro.hardware.nfc_nci=nqx.default
 
+# OEM Unlock
+ro.oem_unlock_supported=1
+
 # Perf
 ro.vendor.extension_library=libqti-perfd-client.so
+
+# Power HAL
+vendor.powerhal.disp.idle_support=false
 
 # QCOM
 sys.config.hardcoder.enable=false
@@ -262,6 +276,11 @@ ro.vendor.vibrator_hal.tick_duration=40
 
 # WiFi
 wifi.aware.interface=wifi-aware0
+
+# Zram
+ro.zram.first_wb_delay_mins=180
+ro.zram.mark_idle_delay_mins=60
+ro.zram.periodic_wb_delay_hours=24
 
 # Zygote
 zygote.critical_window.minute=10
